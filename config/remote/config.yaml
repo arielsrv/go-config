@@ -1,0 +1,3 @@
+app.scope: remote
+base.url: api.iskaypet.com
+key: scope-override
