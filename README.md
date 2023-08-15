@@ -1,5 +1,19 @@
 # Configuration
 
+```shell
+$ go get github.com/arielsrv/go-config
+```
+
+```go
+// config/config.yaml by default
+err := env.Load()
+if err != nil {
+    log.Fatal(err)
+}
+
+log.Print(env.Get("message"))
+```
+
 Environment configuration is based on **Archaius Config**, you should use a similar folder
 structure.
 *SCOPE* env variable in remote environment is required
