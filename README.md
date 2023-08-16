@@ -71,13 +71,13 @@ Example *test.pets-api.internal.com*
     * 1st (first)   remote/test.config.yml
     * 2nd (second)  remote/config.yml
     * 3th (third)   config.yml
-
-    ```
-	> DEBUG go-config: append /go-config/config/remote/dev.config.yaml ...
-	> DEBUG go-config: append /go-config/config/remote/config.yaml ...
-	> DEBUG go-config: append /go-config/config/config.yaml ...
-	> DEBUG ENV: dev, SCOPE: remote
-	> INFO 	VAR: remote-override
-	> INFO 	ENV: dev
-	> INFO 	SCOPE: remote
-	```
+```
+```
+DEBUG go-config: append /go-config/config/remote/dev.config.yaml ... 
+DEBUG go-config: append /go-config/config/remote/config.yaml ... 
+DEBUG go-config: append /go-config/config/config.yaml ... 
+DEBUG ENV: dev, SCOPE: remote 
+INFO  VAR: remote-override 
+INFO  ENV: dev 
+INFO  SCOPE: remote
+```
