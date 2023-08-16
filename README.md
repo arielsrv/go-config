@@ -4,14 +4,36 @@
 $ go get github.com/arielsrv/go-config
 ```
 
+example
+
 ```go
-// config/config.yaml by default
-err := env.Load()
-if err != nil {
-    log.Fatal(err)
+package main
+
+import (
+	"fmt"
+	"github.com/arielsrv/go-config/env"
+	"log"
+	"os"
+)
+
+func init() {
+	err := os.Setenv("ENV", "dev")
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
-log.Print(env.Get("message"))
+func main() {
+	// config/config.yaml by default
+	err := env.Load()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println(fmt.Sprintf("VAR: %s", env.Get("message")))
+	log.Println(fmt.Sprintf("ENV: %s", env.GetEnv()))
+	log.Println(fmt.Sprintf("SCOPE: %s", env.GetScope()))
+}
 ```
 
 Environment configuration is based on **Archaius Config**, you should use a similar folder
@@ -51,8 +73,11 @@ Example *test.pets-api.internal.com*
     * 3th (third)   config.yml
 
     ```
-    2023/08/15 13:47:16 INFO go-config: append /my-app/config/remote/dev.config.yaml ...
-    2023/08/15 13:47:16 INFO go-config: append /my-app/config/remote/config.yaml ...
-    2023/08/15 13:47:16 INFO go-config: append /my-app/config/config.yaml ...
-    2023/08/15 13:47:16 INFO ENV: dev, SCOPE: prod
-    ```
+	> DEBUG go-config: append /go-config/config/remote/dev.config.yaml ...
+	> DEBUG go-config: append /go-config/config/remote/config.yaml ...
+	> DEBUG go-config: append /go-config/config/config.yaml ...
+	> DEBUG ENV: dev, SCOPE: remote
+	> INFO 	VAR: remote-override
+	> INFO 	ENV: dev
+	> INFO 	SCOPE: remote
+	```

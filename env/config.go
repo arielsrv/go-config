@@ -62,6 +62,7 @@ func Load(config ...Config) error {
 		compositeConfig = append(compositeConfig, sharedConfig)
 	}
 
+	godotenv.Overload()
 	err = godotenv.Load(compositeConfig...)
 	if err != nil {
 		return err

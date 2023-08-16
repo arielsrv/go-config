@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/arielsrv/go-config/env"
 	"log"
 	"os"
@@ -20,5 +21,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	log.Print(env.Get("message"))
+	log.Println(fmt.Sprintf("VAR: %s", env.Get("message")))
+	log.Println(fmt.Sprintf("ENV: %s", env.GetEnv()))
+	log.Println(fmt.Sprintf("SCOPE: %s", env.GetScope()))
 }

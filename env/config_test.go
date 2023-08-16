@@ -56,12 +56,12 @@ func TestLoad_Env_Override(t *testing.T) {
 	assert.Equal(t, "env-override", os.Getenv("app.name"))
 }
 
-func TestLoad_Scope_Override(t *testing.T) {
+func TestLoad_Msg_Override(t *testing.T) {
 	os.Clearenv()
 	t.Setenv("ENV", "dev")
 
 	err := env.Load()
 	assert.NoError(t, err)
 	assert.True(t, !env.IsLocal())
-	assert.Equal(t, "scope-override", os.Getenv("key"))
+	assert.Equal(t, "remote-override", os.Getenv("message"))
 }
