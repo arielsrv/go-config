@@ -35,7 +35,7 @@ func Load(config ...Config) error {
 	}
 
 	for {
-		if found(filepath.Join(root, "go.mod")) {
+		if PathExists(filepath.Join(root, "go.mod")) {
 			break
 		}
 		root = filepath.Dir(root)
@@ -45,19 +45,19 @@ func Load(config ...Config) error {
 	var compositeConfig []string
 
 	envConfig := fmt.Sprintf("%s/%s/%s.%s", propertiesPath, currentScope, currentEnv, settings.Filename)
-	if found(envConfig) {
+	if PathExists(envConfig) {
 		slog.Info(fmt.Sprintf("go-config: append %s ...", envConfig))
 		compositeConfig = append(compositeConfig, envConfig)
 	}
 
 	scopeConfig := fmt.Sprintf("%s/%s/%s", propertiesPath, currentScope, settings.Filename)
-	if found(scopeConfig) {
+	if PathExists(scopeConfig) {
 		slog.Info(fmt.Sprintf("go-config: append %s ...", scopeConfig))
 		compositeConfig = append(compositeConfig, scopeConfig)
 	}
 
 	sharedConfig := fmt.Sprintf("%s/%s", propertiesPath, settings.Filename)
-	if found(fmt.Sprintf("%s/%s", propertiesPath, settings.Filename)) {
+	if PathExists(fmt.Sprintf("%s/%s", propertiesPath, settings.Filename)) {
 		slog.Info(fmt.Sprintf("go-config: append %s ...", sharedConfig))
 		compositeConfig = append(compositeConfig, sharedConfig)
 	}
@@ -72,7 +72,7 @@ func Load(config ...Config) error {
 	return nil
 }
 
-func found(path string) bool {
+func PathExists(path string) bool {
 	fileInfo, err := os.Stat(path)
 	if err != nil {
 		slog.Error(fmt.Sprintf("go-config: %s", err))
