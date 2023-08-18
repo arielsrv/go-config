@@ -17,3 +17,35 @@ func TestGet(t *testing.T) {
 	actual := env.Get("key")
 	assert.Equal(t, "value", actual)
 }
+
+func TestGet_Warn(t *testing.T) {
+	defer t.Cleanup(func() {
+		os.Clearenv()
+	})
+
+	actual := env.Get("base.url")
+	assert.True(t, env.IsEmptyString(actual))
+}
+
+func TestIsLocal(t *testing.T) {
+	actual := env.IsLocal()
+	assert.True(t, actual)
+}
+
+func TestIsRemote(t *testing.T) {
+	defer t.Cleanup(func() {
+		os.Clearenv()
+	})
+
+	t.Setenv("ENV", "staging")
+	actual := env.IsRemote()
+	assert.True(t, actual)
+}
+
+func TestIsEmptyString(t *testing.T) {
+	actual := env.IsEmptyString("")
+	assert.True(t, actual)
+
+	actual = env.IsEmptyString(" ")
+	assert.True(t, actual)
+}
