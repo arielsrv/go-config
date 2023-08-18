@@ -49,6 +49,6 @@ jobs:
                 if: steps.verify-changed-files.outputs.files_changed == 'true'
                 uses: ad-m/github-push-action@master
                 with:
-                    github_token: ${{ GITHUB_TOKEN }}
+                    github_token: ${{ secrets.CICD_TOKEN }}
                     branch: ${{ github.head_ref }}
                     force: true
