@@ -78,11 +78,12 @@ Example *test.pets-api.internal.com*
     * 3th (third)   config.yml
 ```
 ```
-DEBUG go-config: append /go-config/config/remote/dev.config.yaml ... 
-DEBUG go-config: append /go-config/config/remote/config.yaml ... 
-DEBUG go-config: append /go-config/config/config.yaml ... 
-DEBUG ENV: dev, SCOPE: remote 
-INFO  VAR: remote-override 
-INFO  ENV: dev 
-INFO  SCOPE: remote
+INFO go-config: append ../my-app/config/remote/test.config.yaml ...
+INFO go-config: append ../my-app/config/remote/config.yaml ...
+INFO go-config: append ../my-app/config/config.yaml ...
+INFO go-config: ENV: test, SCOPE: remote
+ENV: test
+SCOPE: remote
+WARN go-config: config with name SOME.CONFIG not found
 ```
+	
