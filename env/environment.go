@@ -1,18 +1,20 @@
 package env
 
 import (
+	"fmt"
+	"log/slog"
 	"os"
 	"strings"
 )
 
-type Scope int
+type scope int
 
 const (
-	LOCAL Scope = iota
+	LOCAL scope = iota
 	REMOTE
 )
 
-func (s Scope) String() string {
+func (s scope) String() string {
 	return []string{
 		"local",
 		"remote",
@@ -57,6 +59,14 @@ func IsLocal() bool {
 	return LOCAL.String() == GetScope()
 }
 
+func IsRemote() bool {
+	return !IsLocal()
+}
+
 func Get(key string) string {
-	return os.Getenv(key)
+	value := os.Getenv(key)
+	if IsEmptyString(value) {
+		slog.Warn(fmt.Sprintf("go-config: config with name %s not found", key))
+	}
+	return value
 }
