@@ -18,8 +18,8 @@ type Config struct {
 // SCOPE LOCAL (local) or REMOTE (remote)
 // ENV DEV|UAT|REMOTE.
 func Load(config ...Config) error {
-	environment := GetEnv()
-	scope := GetScope()
+	currentEnv := GetEnv()
+	currentScope := GetScope()
 	settings := &Config{
 		Filename: "config.yaml",
 		Folder:   "config",
@@ -35,7 +35,7 @@ func Load(config ...Config) error {
 	}
 
 	for {
-		if isProjectRoot(root) {
+		if PathExists(filepath.Join(root, "go.mod")) {
 			break
 		}
 		root = filepath.Dir(root)
@@ -44,20 +44,20 @@ func Load(config ...Config) error {
 	propertiesPath := fmt.Sprintf("%s/%s", root, settings.Folder)
 	var compositeConfig []string
 
-	envConfig := fmt.Sprintf("%s/%s/%s.%s", propertiesPath, scope, environment, settings.Filename)
-	if found(envConfig) {
+	envConfig := fmt.Sprintf("%s/%s/%s.%s", propertiesPath, currentScope, currentEnv, settings.Filename)
+	if PathExists(envConfig) {
 		slog.Info(fmt.Sprintf("go-config: append %s ...", envConfig))
 		compositeConfig = append(compositeConfig, envConfig)
 	}
 
-	scopeConfig := fmt.Sprintf("%s/%s/%s", propertiesPath, scope, settings.Filename)
-	if found(scopeConfig) {
+	scopeConfig := fmt.Sprintf("%s/%s/%s", propertiesPath, currentScope, settings.Filename)
+	if PathExists(scopeConfig) {
 		slog.Info(fmt.Sprintf("go-config: append %s ...", scopeConfig))
 		compositeConfig = append(compositeConfig, scopeConfig)
 	}
 
 	sharedConfig := fmt.Sprintf("%s/%s", propertiesPath, settings.Filename)
-	if found(fmt.Sprintf("%s/%s", propertiesPath, settings.Filename)) {
+	if PathExists(fmt.Sprintf("%s/%s", propertiesPath, settings.Filename)) {
 		slog.Info(fmt.Sprintf("go-config: append %s ...", sharedConfig))
 		compositeConfig = append(compositeConfig, sharedConfig)
 	}
@@ -67,16 +67,17 @@ func Load(config ...Config) error {
 		return err
 	}
 
-	slog.Info(fmt.Sprintf("ENV: %s, SCOPE: %s", environment, scope))
+	slog.Info(fmt.Sprintf("ENV: %s, SCOPE: %s", currentEnv, currentScope))
 
 	return nil
 }
 
-func isProjectRoot(dir string) bool {
-	return found(filepath.Join(dir, "go.mod"))
-}
-
-func found(path string) bool {
-	_, err := os.Stat(path) // ignore
-	return err == nil
+func PathExists(path string) bool {
+	fileInfo, err := os.Stat(path)
+	if err != nil {
+		slog.Error(fmt.Sprintf("go-config: %s", err))
+		return false
+	}
+	slog.Debug(fmt.Sprintf("go-config: path %s, fileInfo: %s", path, fileInfo.Name()))
+	return true
 }
