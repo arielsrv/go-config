@@ -1,9 +1,10 @@
 package env_test
 
 import (
-	"github.com/arielsrv/go-config/env"
 	"os"
 	"testing"
+
+	"github.com/arielsrv/go-config/env"
 
 	"github.com/stretchr/testify/assert"
 )

@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
-	"github.com/arielsrv/go-config/env"
 	"log"
 	"os"
+
+	"github.com/arielsrv/go-config/env"
 )
 
 func init() {
@@ -21,7 +21,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	log.Println(fmt.Sprintf("VAR: %s", env.Get("message")))
-	log.Println(fmt.Sprintf("ENV: %s", env.GetEnv()))
-	log.Println(fmt.Sprintf("SCOPE: %s", env.GetScope()))
+	log.Printf("VAR: %s", env.Get("message"))
+	log.Printf("ENV: %s", env.GetEnv())
+	log.Printf("SCOPE: %s", env.GetScope())
 }
