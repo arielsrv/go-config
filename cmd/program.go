@@ -21,7 +21,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	log.Printf("VAR: %s", env.Get("message"))
+	log.Printf("VAR: %s", os.Getenv("message"))
 	log.Printf("ENV: %s", env.GetEnv())
 	log.Printf("SCOPE: %s", env.GetScope())
 	log.Printf("NOT FOUND: %s", env.Get("MISSING"))
