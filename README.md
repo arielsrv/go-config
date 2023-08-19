@@ -1,5 +1,4 @@
 ![coverage](https://img.shields.io/badge/Coverage-98.1%25-brightgreen)
-![Coverage](https://img.shields.io/badge/Coverage-98.1%25-brightgreen)
 
 > This package provides a config files based on archaius netflix with some features
 
