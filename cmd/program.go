@@ -17,6 +17,7 @@ func init() {
 
 func main() {
 	// config/config.yaml by default
+	// native text logger | warn level by default
 	env.SetConfigPath("config")
 	env.SetConfigFile("config.yaml")
 	env.SetLogger(slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{
