@@ -51,17 +51,12 @@ func Reset() {
 // SCOPE LOCAL (local) or REMOTE (remote)
 // ENV DEV|UAT|REMOTE.
 func Load() error {
-	root, err := os.Getwd()
+	wd, err := os.Getwd()
 	if err != nil {
 		return err
 	}
 
-	for {
-		if PathExists(filepath.Join(root, "go.mod")) {
-			break
-		}
-		root = filepath.Dir(root)
-	}
+	root := findRoot(wd)
 
 	propertiesPath := fmt.Sprintf("%s/%s", root, config.Folder)
 	var compositeConfig []string
@@ -95,6 +90,15 @@ func Load() error {
 	slog.Info(fmt.Sprintf("ENV: %s, SCOPE: %s", env, scope))
 
 	return nil
+}
+
+func findRoot(path string) string {
+	if PathExists(filepath.Join(path, "go.mod")) {
+		return path
+	}
+
+	parent := filepath.Dir(path)
+	return findRoot(parent)
 }
 
 func PathExists(path string) bool {
