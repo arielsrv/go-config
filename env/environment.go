@@ -2,7 +2,6 @@ package env
 
 import (
 	"fmt"
-	"log/slog"
 	"os"
 	"strings"
 )
@@ -66,7 +65,7 @@ func IsRemote() bool {
 func Get(key string) string {
 	value := os.Getenv(key)
 	if IsEmptyString(value) {
-		slog.Warn(fmt.Sprintf("go-config: config with name %s not found", key))
+		config.Logger.Warn(fmt.Sprintf("go-config: config with name %s not found", key))
 	}
 	return value
 }

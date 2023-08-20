@@ -10,14 +10,18 @@ import (
 )
 
 type Config struct {
-	Filename string
-	Folder   string
+	File   string
+	Path   string
+	Logger *slog.Logger
 }
 
 func New() *Config {
 	c := new(Config)
-	c.Filename = "config.yaml"
-	c.Folder = "config"
+	c.File = "config.yaml"
+	c.Path = "config"
+	c.Logger = slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{
+		Level: slog.LevelWarn,
+	}))
 
 	return c
 }
@@ -30,13 +34,19 @@ func init() {
 
 func SetConfigPath(folder string) {
 	if !IsEmptyString(folder) {
-		config.Folder = folder
+		config.Path = folder
 	}
 }
 
 func SetConfigFile(filename string) {
 	if !IsEmptyString(filename) {
-		config.Filename = filename
+		config.File = filename
+	}
+}
+
+func SetLogger(logger *slog.Logger) {
+	if logger != nil {
+		config.Logger = logger
 	}
 }
 
@@ -61,27 +71,27 @@ func Load() error {
 		root = filepath.Dir(root)
 	}
 
-	propertiesPath := fmt.Sprintf("%s/%s", root, config.Folder)
+	propertiesPath := fmt.Sprintf("%s/%s", root, config.Path)
 	var compositeConfig []string
 
 	env := GetEnv()
 	scope := GetScope()
 
-	envConfig := fmt.Sprintf("%s/%s/%s.%s", propertiesPath, scope, env, config.Filename)
+	envConfig := fmt.Sprintf("%s/%s/%s.%s", propertiesPath, scope, env, config.File)
 	if PathExists(envConfig) {
-		slog.Info(fmt.Sprintf("go-config: append %s ...", envConfig))
+		config.Logger.Info(fmt.Sprintf("go-config: append %s ...", envConfig))
 		compositeConfig = append(compositeConfig, envConfig)
 	}
 
-	scopeConfig := fmt.Sprintf("%s/%s/%s", propertiesPath, scope, config.Filename)
+	scopeConfig := fmt.Sprintf("%s/%s/%s", propertiesPath, scope, config.File)
 	if PathExists(scopeConfig) {
-		slog.Info(fmt.Sprintf("go-config: append %s ...", scopeConfig))
+		config.Logger.Info(fmt.Sprintf("go-config: append %s ...", scopeConfig))
 		compositeConfig = append(compositeConfig, scopeConfig)
 	}
 
-	sharedConfig := fmt.Sprintf("%s/%s", propertiesPath, config.Filename)
-	if PathExists(fmt.Sprintf("%s/%s", propertiesPath, config.Filename)) {
-		slog.Info(fmt.Sprintf("go-config: append %s ...", sharedConfig))
+	sharedConfig := fmt.Sprintf("%s/%s", propertiesPath, config.File)
+	if PathExists(fmt.Sprintf("%s/%s", propertiesPath, config.File)) {
+		config.Logger.Info(fmt.Sprintf("go-config: append %s ...", sharedConfig))
 		compositeConfig = append(compositeConfig, sharedConfig)
 	}
 
@@ -90,7 +100,7 @@ func Load() error {
 		return err
 	}
 
-	slog.Info(fmt.Sprintf("ENV: %s, SCOPE: %s", env, scope))
+	config.Logger.Info(fmt.Sprintf("ENV: %s, SCOPE: %s", env, scope))
 
 	return nil
 }
@@ -98,9 +108,9 @@ func Load() error {
 func PathExists(path string) bool {
 	fileInfo, err := os.Stat(path)
 	if err != nil {
-		slog.Error(fmt.Sprintf("go-config: %s", err))
+		config.Logger.Error(fmt.Sprintf("go-config: %s", err))
 		return false
 	}
-	slog.Debug(fmt.Sprintf("go-config: path %s, fileInfo: %s", path, fileInfo.Name()))
+	config.Logger.Debug(fmt.Sprintf("go-config: path %s, fileInfo: %s", path, fileInfo.Name()))
 	return true
 }
