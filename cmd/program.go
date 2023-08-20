@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"log/slog"
 	"os"
 
 	"github.com/arielsrv/go-config/env"
@@ -18,6 +19,10 @@ func main() {
 	// config/config.yaml by default
 	env.SetConfigPath("config")
 	env.SetConfigFile("config.yaml")
+	env.SetLogger(slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{
+		Level: slog.LevelDebug,
+	})))
+
 	err := env.Load()
 	if err != nil {
 		log.Fatal(err)
