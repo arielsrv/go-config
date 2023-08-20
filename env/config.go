@@ -10,25 +10,47 @@ import (
 )
 
 type Config struct {
-	Filename string
-	Folder   string
+	Filename    string
+	Folder      string
+	Environment string
+	Scope       string
+}
+
+func New() *Config {
+	c := new(Config)
+	c.Filename = "config.yaml"
+	c.Folder = "config"
+
+	return c
+}
+
+var config *Config
+
+func init() {
+	config = New()
+}
+
+func SetConfigPath(folder string) {
+	if !IsEmptyString(folder) {
+		config.Folder = folder
+	}
+}
+
+func SetConfigFile(filename string) {
+	if !IsEmptyString(filename) {
+		config.Filename = filename
+	}
+}
+
+func Reset() {
+	os.Clearenv()
+	config = New()
 }
 
 // Load
 // SCOPE LOCAL (local) or REMOTE (remote)
 // ENV DEV|UAT|REMOTE.
-func Load(config ...Config) error {
-	currentEnv := GetEnv()
-	currentScope := GetScope()
-	settings := &Config{
-		Filename: "config.yaml",
-		Folder:   "config",
-	}
-
-	if len(config) > 0 {
-		settings = &config[0]
-	}
-
+func Load() error {
 	root, err := os.Getwd()
 	if err != nil {
 		return err
@@ -41,23 +63,26 @@ func Load(config ...Config) error {
 		root = filepath.Dir(root)
 	}
 
-	propertiesPath := fmt.Sprintf("%s/%s", root, settings.Folder)
+	propertiesPath := fmt.Sprintf("%s/%s", root, config.Folder)
 	var compositeConfig []string
 
-	envConfig := fmt.Sprintf("%s/%s/%s.%s", propertiesPath, currentScope, currentEnv, settings.Filename)
+	env := GetEnv()
+	scope := GetScope()
+
+	envConfig := fmt.Sprintf("%s/%s/%s.%s", propertiesPath, scope, env, config.Filename)
 	if PathExists(envConfig) {
 		slog.Info(fmt.Sprintf("go-config: append %s ...", envConfig))
 		compositeConfig = append(compositeConfig, envConfig)
 	}
 
-	scopeConfig := fmt.Sprintf("%s/%s/%s", propertiesPath, currentScope, settings.Filename)
+	scopeConfig := fmt.Sprintf("%s/%s/%s", propertiesPath, scope, config.Filename)
 	if PathExists(scopeConfig) {
 		slog.Info(fmt.Sprintf("go-config: append %s ...", scopeConfig))
 		compositeConfig = append(compositeConfig, scopeConfig)
 	}
 
-	sharedConfig := fmt.Sprintf("%s/%s", propertiesPath, settings.Filename)
-	if PathExists(fmt.Sprintf("%s/%s", propertiesPath, settings.Filename)) {
+	sharedConfig := fmt.Sprintf("%s/%s", propertiesPath, config.Filename)
+	if PathExists(fmt.Sprintf("%s/%s", propertiesPath, config.Filename)) {
 		slog.Info(fmt.Sprintf("go-config: append %s ...", sharedConfig))
 		compositeConfig = append(compositeConfig, sharedConfig)
 	}
@@ -67,7 +92,7 @@ func Load(config ...Config) error {
 		return err
 	}
 
-	slog.Info(fmt.Sprintf("ENV: %s, SCOPE: %s", currentEnv, currentScope))
+	slog.Info(fmt.Sprintf("ENV: %s, SCOPE: %s", env, scope))
 
 	return nil
 }
