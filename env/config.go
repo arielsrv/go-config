@@ -10,10 +10,8 @@ import (
 )
 
 type Config struct {
-	Filename    string
-	Folder      string
-	Environment string
-	Scope       string
+	Filename string
+	Folder   string
 }
 
 func New() *Config {
