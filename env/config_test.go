@@ -10,7 +10,7 @@ import (
 )
 
 func TestLoad(t *testing.T) {
-	os.Clearenv()
+	env.Reset()
 	err := env.Load()
 
 	assert.NoError(t, err)
@@ -18,28 +18,26 @@ func TestLoad(t *testing.T) {
 }
 
 func TestLoad_CustomConfig(t *testing.T) {
-	os.Clearenv()
-	err := env.Load(env.Config{
-		Filename: "config.yaml",
-		Folder:   "config",
-	})
+	env.Reset()
+	env.SetConfigPath("config")
+	env.SetConfigFile("config.yaml")
+	err := env.Load()
 
 	assert.NoError(t, err)
 	assert.True(t, env.IsLocal())
 }
 
 func TestLoad_CustomConfig_Err(t *testing.T) {
-	os.Clearenv()
-	err := env.Load(env.Config{
-		Filename: "invalid.yaml",
-		Folder:   "config",
-	})
+	env.Reset()
+	env.SetConfigPath("config")
+	env.SetConfigFile("invalid.yaml")
+	err := env.Load()
 
 	assert.Error(t, err)
 }
 
 func TestLoad_Env(t *testing.T) {
-	os.Clearenv()
+	env.Reset()
 	t.Setenv("ENV", "dev")
 
 	err := env.Load()
@@ -48,7 +46,7 @@ func TestLoad_Env(t *testing.T) {
 }
 
 func TestLoad_Env_Override(t *testing.T) {
-	os.Clearenv()
+	env.Reset()
 	t.Setenv("ENV", "dev")
 
 	err := env.Load()
@@ -58,7 +56,7 @@ func TestLoad_Env_Override(t *testing.T) {
 }
 
 func TestLoad_Msg_Override(t *testing.T) {
-	os.Clearenv()
+	env.Reset()
 	t.Setenv("ENV", "dev")
 
 	err := env.Load()

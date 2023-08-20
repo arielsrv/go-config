@@ -7,14 +7,14 @@ import (
 	"strings"
 )
 
-type scope int
+type Scope int
 
 const (
-	LOCAL scope = iota
+	LOCAL Scope = iota
 	REMOTE
 )
 
-func (s scope) String() string {
+func (s Scope) String() string {
 	return []string{
 		"local",
 		"remote",

@@ -16,6 +16,8 @@ func init() {
 
 func main() {
 	// config/config.yaml by default
+	env.SetConfigPath("config")
+	env.SetConfigFile("config.yaml")
 	err := env.Load()
 	if err != nil {
 		log.Fatal(err)
