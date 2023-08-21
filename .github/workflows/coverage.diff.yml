@@ -1,39 +1,18 @@
-# This workflow will build a golang project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-go
+name: coverage-diff
+concurrency:
+  cancel-in-progress: true
+  group: coverdiff-${{ github.ref }}
 
-name: coverage
+on: [ pull_request ]
 
-on:
-  push:
-    branches: [ "main" ]
-    
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
-  build:
+  main:
+    name: Coverage
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: run tests
-        run: |
-          go test ./... -coverprofile=coverage.out
-
-      - name: generate diff
-        run: |
-          git diff origin/${{ github.base_ref }}...origin/${{ github.head_ref }} > pr.diff
-
-      - name: compute new code coverage
-        id: covdiffaction
-        uses: panagiotisptr/cov-diff@main
-        with:
-          path: .
-          coverprofile: coverage.out
-          diff: pr.diff
-          module: github.com/panagiotisptr/cov-diff
-
-      - name: Comment
-        uses: mshick/add-pr-comment@v2
-        with:
-          message: |
-            Coverage on new code: ${{ steps.covdiffaction.outputs.covdiff }}%
+      - name: Go cover diff
+        uses: kskitek/coverdiff@v0.3.0
