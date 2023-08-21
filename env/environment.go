@@ -29,13 +29,14 @@ func GetEnv() string {
 }
 
 // GetScope
-// * Get scope name from the System.
+// Get scope name from the System.
 // Priority order is as follows:
-// * 1. It looks in "app.scope" system property.
-// * 2. If empty, it looks in ENV system env variable
-// *	2.1 If empty, it is a local scope
-// *	2.2 If not empty and starts with "test," it is a test scope
-// *	2.3 Otherwise, it is a "prod" environment.
+//
+//	-1. It looks in "app.scope" system property.
+//	-2. If empty, it looks in ENV system env variable
+//		-2.1. If empty, it is a local scope
+//		-2.2. If not empty and starts with "test," it is a test scope
+//		-2.3. Otherwise, it is a "prod" environment.
 func GetScope() string {
 	scope := os.Getenv("app.scope")
 	if !IsEmptyString(scope) {

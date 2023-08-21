@@ -28,21 +28,21 @@ func New() *Config {
 	return c
 }
 
-// SetConfigPath "config" from root by default
+// SetConfigPath "config" from root by default.
 func SetConfigPath(configPath string) {
 	if !IsEmptyString(configPath) {
 		config.Path = configPath
 	}
 }
 
-// SetConfigFile "config.yaml" by default
+// SetConfigFile "config.yaml" by default.
 func SetConfigFile(configFile string) {
 	if !IsEmptyString(configFile) {
 		config.File = configFile
 	}
 }
 
-// SetLogger text warn logger by default
+// SetLogger text warn logger by default.
 func SetLogger(logger *slog.Logger) {
 	if logger != nil {
 		config.Logger = logger
