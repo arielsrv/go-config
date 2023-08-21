@@ -4,51 +4,60 @@ version: '3'
 env:
   SOURCE_FOLDER: ./...
   BUILD_FOLDER: build
-  COVERAGE_OUT_FILE: coverage.out
-  COVERAGE_HTML_FILE: coverage.html
-  GO_VERSION: 1.21
-  TASK_VERSION: v3.28
 
 tasks:
-  lint:
+  quality:lint:
     desc: Use golangci-lint (.golangci.yml).
     cmds:
       - golangci-lint run --fix
-  test:
+
+  quality:unit_test:
     desc: Run test.
     cmds:
       - go test ./...
+
+  quality:race_test:
+    desc: Run race test.
+    cmds:
       - go test -race ./...
-  download:
+
+  packages:download:
     desc: Run go mod tidy.
     cmds:
       - go mod tidy
-  upgrade:
+
+  packages:upgrade:
     desc: Check for latest direct dependencies.
     cmds:
       - go-mod-upgrade
+
   create-folder:
     cmds:
       - echo '{{OS}} {{ARCH}}'
       - echo '{{fromSlash .BUILD_FOLDER}}'
       - '{{if eq OS "darwin"}}[ -d "$BUILD_FOLDER" \] & rm -rf "$BUILD_FOLDER" && mkdir -p "$BUILD_FOLDER/.."{{end}}'
     internal: true
+
   build:
-    desc: Build the go EXECUTABLE.
+    desc: Build sources
     cmds:
       - go build -v $SOURCE_FOLDER
+
   run:
     desc: main()
     cmds:
       - go run cmd/program.go
+
   all:
     desc: Run relevant tasks.
     cmds:
-      - task: download
+      - task: packages:download
       - task: build
-      - task: test
-      - task: lint
+      - task: quality:unit_test
+      - task: quality:race_test
+      - task: quality:lint
+
   default:
-    desc: Run [build] task.
+    desc: Run [all].
     cmds:
       - task: all
