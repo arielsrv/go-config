@@ -34,21 +34,21 @@ func Load() error {
 	// ../config/remote/test.config.yaml
 	envConfig := fmt.Sprintf("%s/%s/%s.%s", configPath, scope, env, config.File)
 	if pathExists(envConfig) {
-		config.Logger.Info(fmt.Sprintf("go-config: append %s ...", envConfig))
+		config.Logger.Debug(fmt.Sprintf("go-config: append %s ...", envConfig))
 		compositeConfig = append(compositeConfig, envConfig)
 	}
 
 	// ../config/remote/config.yaml
 	scopeConfig := fmt.Sprintf("%s/%s/%s", configPath, scope, config.File)
 	if pathExists(scopeConfig) {
-		config.Logger.Info(fmt.Sprintf("go-config: append %s ...", scopeConfig))
+		config.Logger.Debug(fmt.Sprintf("go-config: append %s ...", scopeConfig))
 		compositeConfig = append(compositeConfig, scopeConfig)
 	}
 
 	// ../config/config.yaml
 	sharedConfig := fmt.Sprintf("%s/%s", configPath, config.File)
 	if pathExists(fmt.Sprintf("%s/%s", configPath, config.File)) {
-		config.Logger.Info(fmt.Sprintf("go-config: append %s ...", sharedConfig))
+		config.Logger.Debug(fmt.Sprintf("go-config: append %s ...", sharedConfig))
 		compositeConfig = append(compositeConfig, sharedConfig)
 	}
 
@@ -57,7 +57,7 @@ func Load() error {
 		return err
 	}
 
-	config.Logger.Info(fmt.Sprintf("ENV: %s, SCOPE: %s", env, scope))
+	config.Logger.Debug(fmt.Sprintf("ENV: %s, SCOPE: %s", env, scope))
 
 	return nil
 }
@@ -77,11 +77,10 @@ func findRoot(wd string, target string) string {
 }
 
 func pathExists(path string) bool {
-	fileInfo, err := os.Stat(path)
+	_, err := os.Stat(path)
 	if err != nil {
 		config.Logger.Error(fmt.Sprintf("go-config: %s", err))
 		return false
 	}
-	config.Logger.Debug(fmt.Sprintf("go-config: path %s, fileInfo: %s", path, fileInfo.Name()))
 	return true
 }
