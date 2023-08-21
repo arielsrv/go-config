@@ -39,15 +39,12 @@ tasks:
     internal: true
   build:
     desc: Build the go EXECUTABLE.
-    deps: [ create-folder ]
-    generates:
-      - server
     cmds:
       - go build -v $SOURCE_FOLDER
   run:
     desc: main()
     cmds:
-      - go run program.go
+      - go run cmd/program.go
   all:
     desc: Run relevant tasks.
     cmds:
