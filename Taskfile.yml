@@ -18,6 +18,7 @@ tasks:
     desc: Run test.
     cmds:
       - go test ./...
+      - go test -race ./...
   download:
     desc: Run go mod tidy.
     cmds:
@@ -44,8 +45,9 @@ tasks:
     desc: Run relevant tasks.
     cmds:
       - task: download
-      - task: lint
+      - task: build
       - task: test
+      - task: lint
   default:
     desc: Run [build] task.
     cmds:
