@@ -18,6 +18,7 @@ tasks:
     desc: Run test.
     cmds:
       - go test ./...
+      - go test -race ./...
   download:
     desc: Run go mod tidy.
     cmds:
@@ -26,11 +27,6 @@ tasks:
     desc: Check for latest direct dependencies.
     cmds:
       - go-mod-upgrade
-  update:
-    desc: Check for latest direct dependencies
-    deps: [ download ]
-    cmds:
-      - go list -mod=mod -u -m -json all | go-mod-outdated -update -direct
   create-folder:
     cmds:
       - echo '{{OS}} {{ARCH}}'
@@ -49,8 +45,9 @@ tasks:
     desc: Run relevant tasks.
     cmds:
       - task: download
-      - task: lint
+      - task: build
       - task: test
+      - task: lint
   default:
     desc: Run [build] task.
     cmds:

@@ -1,68 +1,67 @@
-package env_test
+package env
 
 import (
+	"fmt"
 	"os"
 	"strings"
 	"testing"
-
-	"github.com/arielsrv/go-config/env"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestLoad(t *testing.T) {
-	env.Reset()
-	err := env.Load()
+	Reset()
+	err := Load()
 
 	assert.NoError(t, err)
-	assert.True(t, env.IsLocal())
+	assert.True(t, IsLocal())
 }
 
 func TestLoad_CustomConfig(t *testing.T) {
-	env.Reset()
-	env.SetConfigPath("config")
-	env.SetConfigFile("config.yaml")
-	err := env.Load()
+	Reset()
+	SetConfigPath("config")
+	SetConfigFile("config.yaml")
+	err := Load()
 
 	assert.NoError(t, err)
-	assert.True(t, env.IsLocal())
+	assert.True(t, IsLocal())
 }
 
 func TestLoad_CustomConfig_Err(t *testing.T) {
-	env.Reset()
-	env.SetConfigPath("config")
-	env.SetConfigFile("invalid.yaml")
-	err := env.Load()
+	Reset()
+	SetConfigPath("config")
+	SetConfigFile("invalid.yaml")
+	err := Load()
 
 	assert.Error(t, err)
 }
 
 func TestLoad_Env(t *testing.T) {
-	env.Reset()
+	Reset()
 	t.Setenv("ENV", "dev")
 
-	err := env.Load()
+	err := Load()
 	assert.NoError(t, err)
-	assert.True(t, !env.IsLocal())
+	assert.True(t, !IsLocal())
 }
 
 func TestLoad_Env_Override(t *testing.T) {
-	env.Reset()
+	Reset()
 	t.Setenv("ENV", "dev")
 
-	err := env.Load()
+	err := Load()
 	assert.NoError(t, err)
-	assert.True(t, !env.IsLocal())
+	assert.True(t, !IsLocal())
 	assert.Equal(t, "env-override", os.Getenv("app.name"))
 }
 
 func TestLoad_Msg_Override(t *testing.T) {
-	env.Reset()
+	Reset()
 	t.Setenv("ENV", "dev")
 
-	err := env.Load()
+	err := Load()
 	assert.NoError(t, err)
-	assert.True(t, !env.IsLocal())
+	assert.True(t, !IsLocal())
 	assert.Equal(t, "remote-override", os.Getenv("message"))
 }
 
@@ -70,14 +69,17 @@ func TestFindRoot(t *testing.T) {
 	wd, err := os.Getwd()
 	assert.NoError(t, err)
 
-	actual := env.FindRoot(wd, "go.mod")
-	assert.True(t, strings.HasSuffix(actual, "/go-config"))
+	actual := findRoot(wd, "go.mod")
+	if !strings.HasSuffix(actual, "/go-config") {
+		t.Logf(fmt.Sprintf("not root found %s", actual))
+		t.Fail()
+	}
 }
 
 func TestFindRoot_Empty(t *testing.T) {
 	wd, err := os.Getwd()
 	assert.NoError(t, err)
 
-	actual := env.FindRoot(wd, "invalid")
+	actual := findRoot(wd, "invalid")
 	assert.Empty(t, actual)
 }
