@@ -23,7 +23,7 @@ func Load() error {
 		return err
 	}
 
-	root := FindRoot(wd, "go.mod")
+	root := findRoot(wd, "go.mod")
 
 	configPath := fmt.Sprintf("%s/%s", root, config.Path)
 	var compositeConfig []string
@@ -62,8 +62,8 @@ func Load() error {
 	return nil
 }
 
-// FindRoot Find go.mod recursively.
-func FindRoot(wd string, target string) string {
+// findRoot Find go.mod recursively.
+func findRoot(wd string, target string) string {
 	if pathExists(filepath.Join(wd, target)) {
 		return wd
 	}
@@ -73,7 +73,7 @@ func FindRoot(wd string, target string) string {
 		// Reached the filesystem root without finding "go.mod"
 		return ""
 	}
-	return FindRoot(parent, target)
+	return findRoot(parent, target)
 }
 
 func pathExists(path string) bool {
