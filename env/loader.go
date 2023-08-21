@@ -8,6 +8,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
+// Reset only for test.
 func Reset() {
 	os.Clearenv()
 	config = New()
