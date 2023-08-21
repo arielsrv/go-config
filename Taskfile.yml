@@ -3,7 +3,6 @@ version: '3'
 
 env:
   SOURCE_FOLDER: ./...
-  BUILD_FOLDER: build
 
 tasks:
   quality:lint:
@@ -31,16 +30,10 @@ tasks:
     cmds:
       - go-mod-upgrade
 
-  create-folder:
-    cmds:
-      - echo '{{OS}} {{ARCH}}'
-      - echo '{{fromSlash .BUILD_FOLDER}}'
-      - '{{if eq OS "darwin"}}[ -d "$BUILD_FOLDER" \] & rm -rf "$BUILD_FOLDER" && mkdir -p "$BUILD_FOLDER/.."{{end}}'
-    internal: true
-
   build:
     desc: Build sources
     cmds:
+      - echo "OS:" {{OS}}, "ARCH:" {{ARCH}}
       - go build -v $SOURCE_FOLDER
 
   run:
