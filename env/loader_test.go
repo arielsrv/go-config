@@ -2,6 +2,7 @@ package env_test
 
 import (
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/arielsrv/go-config/env"
@@ -63,4 +64,20 @@ func TestLoad_Msg_Override(t *testing.T) {
 	assert.NoError(t, err)
 	assert.True(t, !env.IsLocal())
 	assert.Equal(t, "remote-override", os.Getenv("message"))
+}
+
+func TestFindRoot(t *testing.T) {
+	wd, err := os.Getwd()
+	assert.NoError(t, err)
+
+	actual := env.FindRoot(wd, "go.mod")
+	assert.True(t, strings.HasSuffix(actual, "/go-config"))
+}
+
+func TestFindRoot_Empty(t *testing.T) {
+	wd, err := os.Getwd()
+	assert.NoError(t, err)
+
+	actual := env.FindRoot(wd, "invalid")
+	assert.Empty(t, actual)
 }
