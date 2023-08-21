@@ -78,9 +78,5 @@ func findRoot(wd string, target string) string {
 
 func pathExists(path string) bool {
 	_, err := os.Stat(path)
-	if err != nil {
-		config.Logger.Error(fmt.Sprintf("go-config: %s", err))
-		return false
-	}
-	return true
+	return err == nil
 }
