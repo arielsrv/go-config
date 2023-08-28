@@ -70,14 +70,15 @@ linters-settings:
     # Checks the number of lines in a function.
     # If lower than 0, disable the check.
     # Default: 60
-    lines: 100
+    lines: 60
     # Checks the number of statements in a function.
     # If lower than 0, disable the check.
     # Default: 40
     statements: 50
     # Ignore comments when counting lines.
-    # Default false
-    ignore-comments: true
+
+  # Default false
+  ignore-comments: true
 
   gocognit:
     # Minimal code complexity to report.
@@ -175,7 +176,6 @@ linters-settings:
     # Otherwise, only methods that take `*testing.T`, `*testing.B`, and `testing.TB` as arguments are checked.
     # Default: false
     all: true
-
 
 linters:
   disable-all: true

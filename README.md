@@ -43,13 +43,15 @@ structure.
 *SCOPE* env variable in remote environment is required
 
 ```
-└── config
-    ├── config.yml (shared config)
-    └── local
-        └── config.yml (for local development)
-    └── remote (for remote environment)
-        └── config.yml (base config)
-        └── {environment}.config.yml (base config)
+├── config
+│	├── config.yaml 				(shared config)
+│	├── local
+│	│	└── config.yaml             (for local development)
+│	└── remote                      (for remote environment)
+│		├── config.yaml             (base shared config by env)
+│		├── dev.config.yaml
+│		├── prod.config.yaml
+│		└── {env}.config.yaml
 ```
 
 The SDK provides a simple configuration hierarchy
@@ -64,7 +66,7 @@ Example *test.pets-api.internal.com*
 └── config
     ├── config.yml                              3th (third)
     └── local
-        └── config.yml                          <ignored>
+        └── config.yml                          ignored
     └── remote
         └── config.yml (base config)            2nd (second)
         └── test.config.yml (base config)       1st (first)
