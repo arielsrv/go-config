@@ -63,7 +63,7 @@ func Load() error {
 }
 
 // findRoot Find go.mod recursively.
-func findRoot(wd string, target string) string {
+func findRoot(wd, target string) string {
 	if pathExists(filepath.Join(wd, target)) {
 		return wd
 	}
