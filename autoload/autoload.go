@@ -13,5 +13,8 @@ import (
 )
 
 func init() {
-	env.Load() //nolint:nolintlint,errcheck
+	err := env.Load()
+	if err != nil {
+		return
+	}
 }
