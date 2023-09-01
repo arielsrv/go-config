@@ -52,7 +52,7 @@ func GetScope() string {
 }
 
 func IsEmptyString(value string) bool {
-	return len(strings.TrimSpace(value)) == 0
+	return strings.TrimSpace(value) == ""
 }
 
 func IsLocal() bool {
