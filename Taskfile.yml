@@ -20,12 +20,12 @@ tasks:
     cmds:
       - go test -race ./...
 
-  packages:download:
+  download:
     desc: Run go mod tidy.
     cmds:
       - go mod tidy
 
-  packages:upgrade:
+  upgrade:
     desc: Check for latest direct dependencies.
     cmds:
       - go-mod-upgrade
@@ -44,7 +44,7 @@ tasks:
   all:
     desc: Run relevant tasks.
     cmds:
-      - task: packages:download
+      - task: download
       - task: build
       - task: quality:unit_test
       - task: quality:race_test
