@@ -27,6 +27,18 @@ func TestLoad_CustomConfig(t *testing.T) {
 	assert.True(t, IsLocal())
 }
 
+func TestLoad_CustomConfig_By_Param(t *testing.T) {
+	Reset()
+	SetConfig(&Config{
+		File: "config.yaml",
+		Path: "config",
+	})
+	err := Load()
+
+	assert.NoError(t, err)
+	assert.True(t, IsLocal())
+}
+
 func TestLoad_CustomConfig_Err(t *testing.T) {
 	Reset()
 	SetConfigPath("config")
