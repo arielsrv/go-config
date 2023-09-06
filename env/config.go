@@ -48,3 +48,10 @@ func SetLogger(logger *slog.Logger) {
 		config.Logger = logger
 	}
 }
+
+func SetConfig(cfg *Config) {
+	if cfg != nil {
+		config.File = cfg.File
+		config.Path = cfg.Path
+	}
+}
