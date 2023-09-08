@@ -1,10 +1,21 @@
 # yaml-language-server: $schema=https://json.schemastore.org/taskfile.json
+# https://taskfile.dev/
 version: '3'
+
 
 env:
   SOURCE_FOLDER: ./...
+  GO_VERSION: '1.21.1'
 
 tasks:
+  docker:build:
+    desc: docker build
+    cmds:
+      - |
+        docker build -t go-config:latest . \
+         --build-arg GO_VERSION={{.GO_VERSION}} \
+         --progress auto
+
   quality:lint:
     desc: Use golangci-lint (.golangci.yml).
     cmds:
