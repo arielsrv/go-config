@@ -2,6 +2,7 @@ package env
 
 import (
 	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 
@@ -25,29 +26,30 @@ func Load() error {
 
 	root := findRoot(wd, "go.mod")
 
-	configPath := fmt.Sprintf("%s/%s", root, config.Path)
+	configPath := filepath.Join(root, config.Path)
+	log.Println(configPath)
 	var compositeConfig []string
 
 	env := GetEnv()
 	scope := GetScope()
 
 	// ../config/remote/test.config.yaml
-	envConfig := fmt.Sprintf("%s/%s/%s.%s", configPath, scope, env, config.File)
+	envConfig := filepath.Join(configPath, scope, fmt.Sprintf("%s.%s", env, config.File))
 	if pathExists(envConfig) {
 		config.Logger.Debug(fmt.Sprintf("go-config: append %s ...", envConfig))
 		compositeConfig = append(compositeConfig, envConfig)
 	}
 
 	// ../config/remote/config.yaml
-	scopeConfig := fmt.Sprintf("%s/%s/%s", configPath, scope, config.File)
+	scopeConfig := filepath.Join(configPath, scope, config.File)
 	if pathExists(scopeConfig) {
 		config.Logger.Debug(fmt.Sprintf("go-config: append %s ...", scopeConfig))
 		compositeConfig = append(compositeConfig, scopeConfig)
 	}
 
 	// ../config/config.yaml
-	sharedConfig := fmt.Sprintf("%s/%s", configPath, config.File)
-	if pathExists(fmt.Sprintf("%s/%s", configPath, config.File)) {
+	sharedConfig := filepath.Join(configPath, config.File)
+	if pathExists(sharedConfig) {
 		config.Logger.Debug(fmt.Sprintf("go-config: append %s ...", sharedConfig))
 		compositeConfig = append(compositeConfig, sharedConfig)
 	}
