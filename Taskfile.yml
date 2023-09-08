@@ -5,7 +5,6 @@ version: '3'
 
 env:
   SOURCE_FOLDER: ./...
-  GO_VERSION: '1.21.1'
 
 tasks:
   docker:build:
@@ -13,7 +12,6 @@ tasks:
     cmds:
       - |
         docker build -t go-config:latest . \
-         --build-arg GO_VERSION={{.GO_VERSION}} \
          --progress auto
 
   quality:lint:

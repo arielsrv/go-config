@@ -1,5 +1,4 @@
-ARG GO_VERSION
-FROM golang:${GO_VERSION}-alpine AS build
+FROM golang:1.21.1-alpine AS build
 
 ADD . /app
 WORKDIR /app
