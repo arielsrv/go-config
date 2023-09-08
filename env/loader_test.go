@@ -82,7 +82,7 @@ func TestFindRoot(t *testing.T) {
 	assert.NoError(t, err)
 
 	actual := findRoot(wd, "go.mod")
-	if !strings.HasSuffix(actual, "/go-config") {
+	if !strings.HasSuffix(actual, fmt.Sprintf("%c%s", os.PathSeparator, "go-config")) {
 		t.Logf(fmt.Sprintf("not root found %s", actual))
 		t.Fail()
 	}
