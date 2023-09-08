@@ -8,13 +8,6 @@ import (
 	"github.com/arielsrv/go-config/env"
 )
 
-func init() {
-	err := os.Setenv("ENV", "dev")
-	if err != nil {
-		log.Fatal(err)
-	}
-}
-
 func main() {
 	// config/config.yaml by default
 	// native text logger | warn level by default
