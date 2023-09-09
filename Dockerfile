@@ -1,14 +1,15 @@
 FROM golang:latest AS build
 
-ADD . /app
-WORKDIR /app
+ADD . /go-config
+WORKDIR /go-config
 
 RUN go mod tidy
+RUN go test ./...
 RUN go build cmd/program.go
 
 FROM ubuntu:latest AS runtime
 WORKDIR /app
-COPY --from=build /app /app
+COPY --from=build /go-config /app
 
 # remote environment
 ENV ENV=dev
