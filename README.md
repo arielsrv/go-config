@@ -1,4 +1,4 @@
-![Coverage](https://img.shields.io/badge/Coverage-95.5%25-brightgreen)
+![Coverage](https://img.shields.io/badge/Coverage-95.6%25-brightgreen)
 
 # Configuration
 
