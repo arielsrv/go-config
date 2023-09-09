@@ -2,6 +2,7 @@ package env
 
 import (
 	"fmt"
+	"log/slog"
 	"os"
 	"strings"
 	"testing"
@@ -21,6 +22,9 @@ func TestLoad_CustomConfig(t *testing.T) {
 	Reset()
 	SetConfigPath("config")
 	SetConfigFile("config.yaml")
+	SetLogger(slog.New(slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{
+		Level: slog.LevelInfo,
+	})))
 	err := Load()
 
 	assert.NoError(t, err)
