@@ -6,7 +6,7 @@ WORKDIR /app
 RUN go mod tidy
 RUN go build cmd/program.go
 
-FROM debian:latest AS runtime
+FROM ubuntu:latest AS runtime
 WORKDIR /app
 COPY --from=build /app /app
 
