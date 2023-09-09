@@ -11,7 +11,7 @@ tasks:
     desc: docker build
     cmds:
       - |
-        docker build -t go-config:latest . \
+        docker build . --file Dockerfile --tag example:latest \
          --progress auto
 
   quality:lint:
