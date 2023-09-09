@@ -1,8 +1,9 @@
-FROM golang:1.21.1-alpine AS build
+FROM golang:latest AS build
 
 ADD . /app
 WORKDIR /app
 
+RUN go mod tidy
 RUN go build cmd/program.go
 
 FROM debian:latest AS runtime
