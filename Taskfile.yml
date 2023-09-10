@@ -5,6 +5,7 @@ version: '3'
 
 env:
   SOURCE_FOLDER: ./...
+  CGO_ENABLED: 1
 
 tasks:
   docker:build:
