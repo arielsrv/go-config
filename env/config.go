@@ -49,9 +49,10 @@ func SetLogger(logger *slog.Logger) {
 	}
 }
 
+// SetConfig set custom config.
 func SetConfig(cfg *Config) {
 	if cfg != nil {
-		config.File = cfg.File
-		config.Path = cfg.Path
+		SetConfigFile(cfg.File)
+		SetConfigPath(cfg.Path)
 	}
 }
