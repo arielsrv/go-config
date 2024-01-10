@@ -6,7 +6,7 @@ import (
 	"os"
 	"time"
 
-	"gitlab.com/iskaypetcom/digital/sre/tools/dev/go-sdk-config/env"
+	"github.com/arielsrv/go-config/env"
 )
 
 func main() {

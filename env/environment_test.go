@@ -4,8 +4,8 @@ import (
 	"os"
 	"testing"
 
+	"github.com/arielsrv/go-config/env"
 	"github.com/stretchr/testify/assert"
-	"gitlab.com/iskaypetcom/digital/sre/tools/dev/go-sdk-config/env"
 )
 
 func TestGet(t *testing.T) {

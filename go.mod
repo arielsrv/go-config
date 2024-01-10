@@ -1,4 +1,4 @@
-module gitlab.com/iskaypetcom/digital/sre/tools/dev/go-sdk-config
+module github.com/arielsrv/go-config
 
 go 1.21
 

@@ -1,6 +1,6 @@
 package config
 
 import (
-	_ "gitlab.com/iskaypetcom/digital/sre/tools/dev/go-sdk-config/autoload"
-	_ "gitlab.com/iskaypetcom/digital/sre/tools/dev/go-sdk-config/env"
+	_ "github.com/arielsrv/go-config/autoload"
+	_ "github.com/arielsrv/go-config/env"
 )

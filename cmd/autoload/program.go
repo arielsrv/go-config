@@ -4,8 +4,8 @@ import (
 	"log"
 	"os"
 
-	_ "gitlab.com/iskaypetcom/digital/sre/tools/dev/go-sdk-config/autoload"
-	"gitlab.com/iskaypetcom/digital/sre/tools/dev/go-sdk-config/env"
+	_ "github.com/arielsrv/go-config/autoload"
+	"github.com/arielsrv/go-config/env"
 )
 
 func main() {
