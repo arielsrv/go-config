@@ -1,13 +1,15 @@
 package env
 
 import (
+	"errors"
 	"fmt"
-	"log"
 	"os"
 	"path/filepath"
 
-	"github.com/joho/godotenv"
+	"github.com/spf13/viper"
 )
+
+var cfg = viper.New()
 
 // Reset only for test.
 func Reset() {
@@ -27,39 +29,57 @@ func Load() error {
 	root := findRoot(wd, "go.mod")
 
 	configPath := filepath.Join(root, config.Path)
-	log.Println(configPath)
-	var compositeConfig []string
+	var compositeConfig []*viper.Viper
 
 	env := GetEnv()
 	scope := GetScope()
 
-	// ../config/remote/test.config.yaml
-	envConfig := filepath.Join(configPath, scope, fmt.Sprintf("%s.%s", env, config.File))
-	if pathExists(envConfig) {
-		config.Logger.Debug(fmt.Sprintf("go-config: append %s ...", envConfig))
-		compositeConfig = append(compositeConfig, envConfig)
+	// ../config/config.yaml
+	sharedConfig := filepath.Join(configPath, config.File)
+	if pathExists(sharedConfig) {
+		config.Logger.Debug(fmt.Sprintf("go-config: append %s ...", sharedConfig))
+		conf := viper.New()
+		conf.SetConfigFile(sharedConfig)
+		compositeConfig = append(compositeConfig, conf)
 	}
 
 	// ../config/remote/config.yaml
 	scopeConfig := filepath.Join(configPath, scope, config.File)
 	if pathExists(scopeConfig) {
 		config.Logger.Debug(fmt.Sprintf("go-config: append %s ...", scopeConfig))
-		compositeConfig = append(compositeConfig, scopeConfig)
+		conf := viper.New()
+		conf.SetConfigFile(scopeConfig)
+		compositeConfig = append(compositeConfig, conf)
 	}
 
-	// ../config/config.yaml
-	sharedConfig := filepath.Join(configPath, config.File)
-	if pathExists(sharedConfig) {
-		config.Logger.Debug(fmt.Sprintf("go-config: append %s ...", sharedConfig))
-		compositeConfig = append(compositeConfig, sharedConfig)
+	if !IsLocal() {
+		// ../config/remote/test.config.yaml
+		envConfig := filepath.Join(configPath, scope, fmt.Sprintf("%s.%s", env, config.File))
+		if pathExists(envConfig) {
+			config.Logger.Debug(fmt.Sprintf("go-config: append %s ...", envConfig))
+			conf := viper.New()
+			conf.SetConfigFile(envConfig)
+			compositeConfig = append(compositeConfig, conf)
+		}
 	}
 
-	err = godotenv.Load(compositeConfig...)
-	if err != nil {
-		return err
+	if len(compositeConfig) == 0 {
+		return errors.New("no config files found")
 	}
 
-	config.Logger.Debug(fmt.Sprintf("ENV: %s, SCOPE: %s", env, scope))
+	for i := 0; i < len(compositeConfig); i++ {
+		c := compositeConfig[i]
+		err = c.ReadInConfig()
+		if err != nil {
+			return err
+		}
+		err = cfg.MergeConfigMap(c.AllSettings())
+		if err != nil {
+			return err
+		}
+	}
+
+	config.Logger.Info(fmt.Sprintf("ENV: %s, SCOPE: %s", env, scope))
 
 	return nil
 }
@@ -73,7 +93,7 @@ func findRoot(wd, target string) string {
 	parent := filepath.Dir(wd)
 	if parent == wd {
 		// Reached the filesystem root without finding "go.mod"
-		return ""
+		return StringEmpty
 	}
 	return findRoot(parent, target)
 }

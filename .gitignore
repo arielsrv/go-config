@@ -26,5 +26,4 @@ coverage-report.html
 coverage-report.out
 gl-code-quality-report.json
 dump.lsif
-build
 bin

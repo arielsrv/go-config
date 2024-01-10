@@ -1,2 +1,4 @@
 app.name: go-config
 message: Hello from go-config!
+my-var1: some_var_value1
+MY_VAR2: some-var-value2

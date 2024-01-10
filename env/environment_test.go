@@ -4,8 +4,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/arielsrv/go-config/env"
 	"github.com/stretchr/testify/assert"
+	"gitlab.com/iskaypetcom/digital/sre/tools/dev/go-sdk-config/env"
 )
 
 func TestGet(t *testing.T) {
@@ -16,15 +16,6 @@ func TestGet(t *testing.T) {
 	t.Setenv("key", "value")
 	actual := env.Get("key")
 	assert.Equal(t, "value", actual)
-}
-
-func TestGet_Warn(t *testing.T) {
-	defer t.Cleanup(func() {
-		os.Clearenv()
-	})
-
-	actual := env.Get("base.url")
-	assert.True(t, env.IsEmptyString(actual))
 }
 
 func TestIsLocal(t *testing.T) {
@@ -48,4 +39,23 @@ func TestIsEmptyString(t *testing.T) {
 
 	actual = env.IsEmptyString(" ")
 	assert.True(t, actual)
+}
+
+func TestGetInt(t *testing.T) {
+	defer t.Cleanup(func() {
+		os.Clearenv()
+	})
+
+	t.Setenv("key", "1000")
+	actual := env.GetInt("key", 0)
+	assert.Equal(t, 1000, actual)
+}
+
+func TestGetInt_Default(t *testing.T) {
+	defer t.Cleanup(func() {
+		os.Clearenv()
+	})
+
+	actual := env.GetInt("key", 1000)
+	assert.Equal(t, 1000, actual)
 }

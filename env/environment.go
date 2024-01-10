@@ -3,6 +3,7 @@ package env
 import (
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -12,6 +13,8 @@ const (
 	LOCAL Scope = iota
 	REMOTE
 )
+
+const StringEmpty = ""
 
 func (s Scope) String() string {
 	return []string{
@@ -38,7 +41,7 @@ func GetEnv() string {
 //		-2.2. If not empty and starts with "test," it is a test scope
 //		-2.3. Otherwise, it is a "prod" environment.
 func GetScope() string {
-	scope := os.Getenv("app.scope")
+	scope := cfg.GetString("app.scope")
 	if !IsEmptyString(scope) {
 		return scope
 	}
@@ -48,11 +51,15 @@ func GetScope() string {
 		return LOCAL.String()
 	}
 
+	if env == strings.ToLower(LOCAL.String()) {
+		return LOCAL.String()
+	}
+
 	return REMOTE.String()
 }
 
 func IsEmptyString(value string) bool {
-	return strings.TrimSpace(value) == ""
+	return strings.TrimSpace(value) == StringEmpty
 }
 
 func IsLocal() bool {
@@ -64,9 +71,21 @@ func IsRemote() bool {
 }
 
 func Get(key string) string {
-	value := os.Getenv(key)
+	value := cfg.GetString(key)
 	if IsEmptyString(value) {
+		value = os.Getenv(key)
+		if IsEmptyString(value) {
+			config.Logger.Warn(fmt.Sprintf("go-config: config with name %s not found", key))
+		}
+	}
+	return value
+}
+
+func GetInt(key string, defaultValue int) int {
+	value, err := strconv.Atoi(Get(key))
+	if err != nil {
 		config.Logger.Warn(fmt.Sprintf("go-config: config with name %s not found", key))
+		return defaultValue
 	}
 	return value
 }

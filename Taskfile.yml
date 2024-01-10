@@ -15,17 +15,17 @@ tasks:
         docker build . --file Dockerfile --tag example:latest \
          --progress auto
 
-  quality:lint:
+  lint:
     desc: Use golangci-lint (.golangci.yml).
     cmds:
       - golangci-lint run --fix
 
-  quality:unit_test:
+  unit_test:
     desc: Run test.
     cmds:
       - go test ./...
 
-  quality:race_test:
+  race_test:
     desc: Run race test.
     cmds:
       - go test -race ./...
@@ -56,9 +56,9 @@ tasks:
     cmds:
       - task: download
       - task: build
-      - task: quality:unit_test
-      - task: quality:race_test
-      - task: quality:lint
+      - task: unit_test
+      - task: race_test
+      - task: lint
 
   default:
     desc: Run [all].

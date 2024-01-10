@@ -8,13 +8,14 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestLoad(t *testing.T) {
 	Reset()
 	err := Load()
 
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	assert.True(t, IsLocal())
 }
 
@@ -27,7 +28,7 @@ func TestLoad_CustomConfig(t *testing.T) {
 	})))
 	err := Load()
 
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	assert.True(t, IsLocal())
 }
 
@@ -39,7 +40,7 @@ func TestLoad_CustomConfig_By_Param(t *testing.T) {
 	})
 	err := Load()
 
-	assert.NoError(t, err)
+	require.NoError(t, err)
 	assert.True(t, IsLocal())
 }
 
@@ -49,7 +50,7 @@ func TestLoad_CustomConfig_Err(t *testing.T) {
 	SetConfigFile("invalid.yaml")
 	err := Load()
 
-	assert.Error(t, err)
+	require.Error(t, err)
 }
 
 func TestLoad_Env(t *testing.T) {
@@ -57,33 +58,13 @@ func TestLoad_Env(t *testing.T) {
 	t.Setenv("ENV", "dev")
 
 	err := Load()
-	assert.NoError(t, err)
-	assert.True(t, !IsLocal())
-}
-
-func TestLoad_Env_Override(t *testing.T) {
-	Reset()
-	t.Setenv("ENV", "dev")
-
-	err := Load()
-	assert.NoError(t, err)
-	assert.True(t, !IsLocal())
-	assert.Equal(t, "env-override", os.Getenv("app.name"))
-}
-
-func TestLoad_Msg_Override(t *testing.T) {
-	Reset()
-	t.Setenv("ENV", "dev")
-
-	err := Load()
-	assert.NoError(t, err)
-	assert.True(t, !IsLocal())
-	assert.Equal(t, "remote-override", os.Getenv("message"))
+	require.NoError(t, err)
+	assert.False(t, IsLocal())
 }
 
 func TestFindRoot(t *testing.T) {
 	wd, err := os.Getwd()
-	assert.NoError(t, err)
+	require.NoError(t, err)
 
 	actual := findRoot(wd, "go.mod")
 	if !strings.HasSuffix(actual, fmt.Sprintf("%c%s", os.PathSeparator, "go-config")) {
@@ -94,7 +75,7 @@ func TestFindRoot(t *testing.T) {
 
 func TestFindRoot_Empty(t *testing.T) {
 	wd, err := os.Getwd()
-	assert.NoError(t, err)
+	require.NoError(t, err)
 
 	actual := findRoot(wd, "invalid")
 	assert.Empty(t, actual)

@@ -6,7 +6,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/arielsrv/go-config/env"
+	"gitlab.com/iskaypetcom/digital/sre/tools/dev/go-sdk-config/env"
 )
 
 func main() {
@@ -23,7 +23,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	log.Printf("VAR: %s", os.Getenv("message"))
+	log.Printf("VAR: %s", env.Get("message"))
+	log.Printf("MY-VAR1: %s", env.Get("my-var1"))
+	log.Printf("MY_VAR2: %s", env.Get("MY_VAR2"))
 	log.Printf("ENV: %s", env.GetEnv())
 	log.Printf("SCOPE: %s", env.GetScope())
 	log.Printf("NOT FOUND: %s", env.Get("MISSING"))

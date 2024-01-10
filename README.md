@@ -1,9 +1,11 @@
-![Coverage](https://img.shields.io/badge/Coverage-98.5%25-brightgreen)
+[![pipeline status](https://gitlab.com/iskaypetcom/digital/sre/tools/dev/go-sdk-config/badges/main/pipeline.svg)](https://gitlab.com/iskaypetcom/digital/sre/tools/dev/go-sdk-config/-/commits/main)
+[![coverage report](https://gitlab.com/iskaypetcom/digital/sre/tools/dev/go-sdk-config/badges/main/coverage.svg)](https://gitlab.com/iskaypetcom/digital/sre/tools/dev/go-sdk-config/-/commits/main)
+[![release](https://gitlab.com/iskaypetcom/digital/sre/tools/dev/go-sdk-config/-/badges/release.svg)](https://gitlab.com/iskaypetcom/digital/sre/tools/dev/go-sdk-config/-/releases)
 
 # Configuration
 
 ```shell
-$ go get github.com/arielsrv/go-config
+go get gitlab.com/iskaypetcom/digital/sre/tools/dev/go-sdk-config
 ```
 
 example
@@ -16,7 +18,7 @@ import (
 	"log/slog"
 	"os"
 
-	"github.com/arielsrv/go-config/env"
+	"gitlab.com/iskaypetcom/digital/sre/tools/dev/go-sdk-config/env"
 )
 
 func init() {
