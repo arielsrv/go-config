@@ -1,4 +1,5 @@
 [![pipeline status](https://gitlab.com/iskaypetcom/digital/sre/tools/dev/go-sdk-config/badges/main/pipeline.svg)](https://gitlab.com/iskaypetcom/digital/sre/tools/dev/go-sdk-config/-/commits/main)
+![Coverage](https://img.shields.io/badge/Coverage-94.4%25-brightgreen)
 [![coverage report](https://gitlab.com/iskaypetcom/digital/sre/tools/dev/go-sdk-config/badges/main/coverage.svg)](https://gitlab.com/iskaypetcom/digital/sre/tools/dev/go-sdk-config/-/commits/main)
 [![release](https://gitlab.com/iskaypetcom/digital/sre/tools/dev/go-sdk-config/-/badges/release.svg)](https://gitlab.com/iskaypetcom/digital/sre/tools/dev/go-sdk-config/-/releases)
 
