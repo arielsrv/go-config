@@ -1,6 +1,6 @@
 FROM golang:latest AS build
 
-ADD . /go-config
+COPY . /go-config
 WORKDIR /go-config
 
 RUN go mod tidy
