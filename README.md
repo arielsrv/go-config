@@ -1,7 +1,7 @@
 > Go Config
 
 # Configuration
-![Coverage](https://img.shields.io/badge/Coverage-94.4%25-brightgreen)
+![Coverage](https://img.shields.io/badge/Coverage-78.0%25-brightgreen)
 
 ```shell
 go get github.com/arielsrv/go-config
