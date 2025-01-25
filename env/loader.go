@@ -67,7 +67,7 @@ func Load() error {
 		return errors.New("no config files found")
 	}
 
-	for i := 0; i < len(compositeConfig); i++ {
+	for i := range compositeConfig {
 		c := compositeConfig[i]
 		err = c.ReadInConfig()
 		if err != nil {
