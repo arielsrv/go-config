@@ -6,9 +6,9 @@ import (
 )
 
 type Config struct {
+	Logger *slog.Logger
 	File   string
 	Path   string
-	Logger *slog.Logger
 }
 
 var config *Config
