@@ -1,12 +1,10 @@
 module github.com/arielsrv/go-config
 
-go 1.21
-
-toolchain go1.21.6
+go 1.23.5
 
 require (
 	github.com/spf13/viper v1.19.0
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 )
 
 require (
