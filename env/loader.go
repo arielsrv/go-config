@@ -17,9 +17,6 @@ func Reset() {
 	config = New()
 }
 
-// Load
-// SCOPE LOCAL (local) or REMOTE (remote)
-// ENV DEV|UAT|REMOTE.
 func Load() error {
 	wd, err := os.Getwd()
 	if err != nil {

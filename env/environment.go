@@ -23,16 +23,14 @@ func (s Scope) String() string {
 	}[s]
 }
 
-// GetEnv
-// Get env variable from the System.
+// GetEnv env variable from the System.
 // Example for test.golang-template.internal.com is test.
 func GetEnv() string {
 	env := os.Getenv("ENV")
 	return strings.ToLower(env)
 }
 
-// GetScope
-// Get scope name from the System.
+// GetScope scope name from the System.
 // Priority order is as follows:
 //
 //	-1. It looks in "app.scope" system property.
