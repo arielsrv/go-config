@@ -4,7 +4,7 @@ go 1.24.3
 
 require (
 	github.com/spf13/viper v1.20.1
-	github.com/stretchr/testify v1.11.0
+	github.com/stretchr/testify v1.11.1
 )
 
 require (
